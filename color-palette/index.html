@@ -5,114 +5,39 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Color Palette Widget</title>
 <style>
-:root{
-  --bg:#F8F5EF;
-  --text:#2F3B2D;
-  --muted:#77756F;
-  --border:rgba(47,59,45,.14);
-}
-*{box-sizing:border-box}
-html,body{margin:0;background:transparent;font-family:Inter,system-ui,-apple-system,"Segoe UI",sans-serif;color:var(--text)}
-body{padding:8px}
-.widget{
-  width:100%;
-  background:var(--bg);
-  border:1px solid var(--border);
-  border-radius:22px;
-  padding:26px 24px 22px;
-}
-.eyebrow{
-  text-align:center;
-  font-size:11px;
-  letter-spacing:.28em;
-  color:var(--muted);
-  font-weight:600;
-}
-h1{
-  margin:6px 0 0;
-  text-align:center;
-  font-family:Georgia,"Times New Roman",serif;
-  font-size:clamp(22px,3vw,34px);
-  letter-spacing:.05em;
-  font-weight:600;
-}
-.divider{
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  gap:10px;
-  margin:11px 0 20px;
-  color:var(--muted);
-  font-size:14px;
-}
-.divider:before,.divider:after{content:"";width:38px;height:1px;background:var(--border)}
-.palette{
-  display:grid;
-  grid-template-columns:repeat(6,minmax(72px,1fr));
-  gap:16px;
-}
-.swatch{text-align:center;min-width:0}
-.color{
-  width:min(100%,112px);
-  aspect-ratio:1;
-  margin:0 auto 9px;
-  background:var(--swatch);
-  border-radius:50%;
-  box-shadow:inset 0 0 0 1px rgba(0,0,0,.04),0 5px 14px rgba(47,59,45,.06);
-}
-.hex{font-size:12px;letter-spacing:.06em;color:var(--muted);white-space:nowrap;user-select:all}
-.label{font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);opacity:.76;margin-top:3px}
-.square .color{border-radius:14px}
-.soft-square .color{border-radius:28%}
-.no-hex .hex{display:none}
-.no-labels .label{display:none}
-.block h1{font-family:Inter,system-ui,sans-serif;font-weight:800}
-.mono h1,.mono .hex,.mono .label{font-family:Consolas,"SFMono-Regular",monospace}
-@media(max-width:760px){
-  .palette{grid-template-columns:repeat(3,1fr);gap:18px 12px}
-  .color{max-width:96px}
-}
-@media(max-width:420px){
-  .palette{grid-template-columns:repeat(2,1fr)}
-}
+:root{--bg:#F8F5EF;--text:#2F3B2D;--muted:#77756F;--border:rgba(47,59,45,.14)}
+*{box-sizing:border-box}html,body{margin:0;background:transparent;font-family:Inter,system-ui,-apple-system,"Segoe UI",sans-serif;color:var(--text)}body{padding:8px}
+.widget{width:100%;background:var(--bg);border:1px solid var(--border);border-radius:22px;padding:26px 24px 22px}
+.eyebrow{text-align:center;font-size:11px;letter-spacing:.28em;color:var(--muted);font-weight:600}
+h1{margin:6px 0 0;text-align:center;font-family:Georgia,"Times New Roman",serif;font-size:clamp(22px,3vw,34px);letter-spacing:.05em;font-weight:600}
+.divider{display:flex;align-items:center;justify-content:center;gap:10px;margin:11px 0 20px;color:var(--muted);font-size:14px}.divider:before,.divider:after{content:"";width:38px;height:1px;background:var(--border)}
+.palette{display:grid;grid-template-columns:repeat(6,minmax(72px,1fr));gap:16px}.swatch{text-align:center;min-width:0}
+.color-button{display:block;width:min(100%,112px);aspect-ratio:1;margin:0 auto 9px;padding:0;border:0;border-radius:50%;background:var(--swatch);cursor:pointer;box-shadow:inset 0 0 0 1px rgba(0,0,0,.04),0 5px 14px rgba(47,59,45,.06);transition:transform .16s ease,box-shadow .16s ease;position:relative}
+.color-button:hover{transform:translateY(-3px);box-shadow:inset 0 0 0 1px rgba(0,0,0,.04),0 8px 18px rgba(47,59,45,.11)}
+.color-button:active{transform:scale(.96)}.color-button:focus-visible{outline:3px solid var(--text);outline-offset:3px}
+.color-button.copied:after{content:"✓";position:absolute;inset:0;display:grid;place-items:center;color:white;font-size:28px;font-weight:800;text-shadow:0 1px 5px rgba(0,0,0,.35)}
+.hex{font-size:12px;letter-spacing:.06em;color:var(--muted);white-space:nowrap;user-select:all}.label{font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);opacity:.76;margin-top:3px}
+.square .color-button{border-radius:14px}.soft-square .color-button{border-radius:28%}.no-hex .hex{display:none}.no-labels .label{display:none}.block h1{font-family:Inter,system-ui,sans-serif;font-weight:800}.mono h1,.mono .hex,.mono .label{font-family:Consolas,"SFMono-Regular",monospace}
+.toast{min-height:22px;margin-top:15px;text-align:center;font-size:11px;letter-spacing:.05em;color:var(--muted);opacity:0;transition:opacity .18s ease}.toast.show{opacity:1}
+@media(max-width:760px){.palette{grid-template-columns:repeat(3,1fr);gap:18px 12px}.color-button{max-width:96px}}@media(max-width:420px){.palette{grid-template-columns:repeat(2,1fr)}}
+@media(prefers-reduced-motion:reduce){.color-button,.toast{transition:none}}
 </style>
 </head>
 <body>
 <main class="widget" id="widget">
-  <div class="eyebrow">COLOR PALETTE</div>
-  <h1 id="title">Garden Bloom</h1>
-  <div class="divider">❦</div>
-  <section class="palette" id="palette"></section>
+<div class="eyebrow">COLOR PALETTE</div><h1 id="title">Garden Bloom</h1><div class="divider">❦</div><section class="palette" id="palette"></section><div class="toast" id="toast" role="status" aria-live="polite"></div>
 </main>
 <script>
 const p=new URLSearchParams(location.search);
-const colors=(p.get("c")||"DCE5D8,7B8D76,2F3B2D,F5DEDD,E8B9B6,DA9D9A")
-  .split(",").map(x=>x.trim().replace("#","")).filter(Boolean);
-const names=(p.get("names")||"Pale Sage,Muted Sage,Deep Forest,Soft Blush,Dusty Pink,Muted Rose")
-  .split(",").map(x=>x.trim());
-const widget=document.getElementById("widget");
-document.getElementById("title").textContent=p.get("name")||"Garden Bloom";
-
-const style=p.get("style")||"circle";
-if(style==="square")widget.classList.add("square");
-if(style==="soft-square")widget.classList.add("soft-square");
-widget.classList.add(p.get("font")||"serif");
-if(p.get("hex")==="0")widget.classList.add("no-hex");
-if(p.get("labels")==="0")widget.classList.add("no-labels");
-
-for(const [param,cssvar] of [["bg","--bg"],["text","--text"],["muted","--muted"]]){
-  if(p.get(param))document.documentElement.style.setProperty(cssvar,"#"+p.get(param).replace("#",""));
-}
-
-const palette=document.getElementById("palette");
-colors.slice(0,8).forEach((hex,i)=>{
-  const el=document.createElement("div");
-  el.className="swatch";
-  el.innerHTML=`<div class="color" style="--swatch:#${hex}"></div>
-                <div class="hex">#${hex.toUpperCase()}</div>
-                <div class="label">${names[i]||""}</div>`;
-  palette.appendChild(el);
-});
+const colors=(p.get("c")||"DCE5D8,7B8D76,2F3B2D,F5DEDD,E8B9B6,DA9D9A").split(",").map(x=>x.trim().replace("#","")).filter(Boolean);
+const names=(p.get("names")||"Pale Sage,Muted Sage,Deep Forest,Soft Blush,Dusty Pink,Muted Rose").split(",").map(x=>x.trim());
+const widget=document.getElementById("widget"),toast=document.getElementById("toast");document.getElementById("title").textContent=p.get("name")||"Garden Bloom";
+const style=p.get("style")||"circle";if(style==="square")widget.classList.add("square");if(style==="soft-square")widget.classList.add("soft-square");widget.classList.add(p.get("font")||"serif");if(p.get("hex")==="0")widget.classList.add("no-hex");if(p.get("labels")==="0")widget.classList.add("no-labels");
+for(const [param,cssvar] of [["bg","--bg"],["text","--text"],["muted","--muted"]])if(p.get(param))document.documentElement.style.setProperty(cssvar,"#"+p.get(param).replace("#",""));
+let toastTimer;
+async function copyHex(value,button){let ok=false;try{await navigator.clipboard.writeText(value);ok=true}catch(e){const ta=document.createElement("textarea");ta.value=value;ta.style.position="fixed";ta.style.opacity="0";document.body.appendChild(ta);ta.focus();ta.select();try{ok=document.execCommand("copy")}catch(_){}ta.remove()}
+clearTimeout(toastTimer);toast.textContent=ok?`${value} copied!`:`Copy: ${value}`;toast.classList.add("show");if(ok){button.classList.add("copied");setTimeout(()=>button.classList.remove("copied"),650)}toastTimer=setTimeout(()=>toast.classList.remove("show"),1400)}
+const palette=document.getElementById("palette");colors.slice(0,8).forEach((hex,i)=>{const value="#"+hex.toUpperCase(),el=document.createElement("div");el.className="swatch";const btn=document.createElement("button");btn.type="button";btn.className="color-button";btn.style.setProperty("--swatch",value);btn.setAttribute("aria-label",`${value}をコピー`);btn.title=`Copy ${value}`;btn.addEventListener("click",()=>copyHex(value,btn));const code=document.createElement("div");code.className="hex";code.textContent=value;const label=document.createElement("div");label.className="label";label.textContent=names[i]||"";el.append(btn,code,label);palette.appendChild(el)});
 </script>
 </body>
 </html>
